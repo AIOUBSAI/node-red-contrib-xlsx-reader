@@ -2,13 +2,17 @@
 
 Node-RED node to read Excel files/directories, aggregate sheets into a single output, and optionally fill “merged-like” columns.
 
+![status](https://img.shields.io/badge/state-open%20or%20closed-blue) ![license](https://img.shields.io/badge/License-MIT-green)
+
+---
+
 ## Features
 
-* Read a **single file** or a **directory** of `.xlsx` files.
-* Skip sheets by **regex** and/or **hidden** flag.
-* **One aggregated output message** (no per-sheet spam).
-* Choose where to store the result: **`msg`**, **`flow`**, or **`global`** + a **deep path** (e.g. `data`, `store.xl`).
-* Optional **fill-forward** for specified columns to handle Excel **merged cells** exported as blanks.
+* ✅ Read a **single file** or a **directory** of `.xlsx` files.
+* ✅ Skip sheets by **regex** and/or **hidden** flag.
+* ✅ **One aggregated output message** (no per-sheet spam).
+* ✅ Choose where to store the result: **`msg`**, **`flow`**, or **`global`** + a **deep path** (e.g. `data`, `store.xl`).
+* ✅ Optional **fill-forward** for specified columns to handle Excel **merged cells** exported as blanks.
 
 ## Install
 
