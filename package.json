@@ -4,10 +4,19 @@
   "description": "Node-RED node to read Excel files/directories, aggregate sheets, and fill merged-like columns",
   "license": "MIT",
   "keywords": ["node-red", "node-red-contrib", "excel", "xlsx", "data"],
-  "author": "sai.aioub@gmail.com",
-  "repository": { "type": "git", "url": "https://github.com/yourname/node-red-contrib-xlsx-reader.git" },
-  "bugs": { "url": "https://github.com/AIOUBSAI/node-red-contrib-xlsx-reader/issues" },
+  "author": "Aioub Sai <sai.aioub@gmail.com> (https://github.com/AIOUBSAI)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AIOUBSAI/node-red-contrib-xlsx-reader.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AIOUBSAI/node-red-contrib-xlsx-reader/issues"
+  },
   "homepage": "https://github.com/AIOUBSAI/node-red-contrib-xlsx-reader#readme",
+  "engines": {
+    "node": ">=14.0.0",
+    "node-red": ">=3.0.0"
+  },
   "dependencies": {
     "xlsx": "^0.18.5"
   },
@@ -15,5 +24,15 @@
     "nodes": {
       "xlsx-reader": "xlsx-reader.js"
     }
+  },
+  "files": [
+    "xlsx-reader.js",
+    "xlsx-reader.html",
+    "README.md",
+    "LICENSE",
+    "icons/"
+  ],
+  "publishConfig": {
+    "access": "public"
   }
 }
