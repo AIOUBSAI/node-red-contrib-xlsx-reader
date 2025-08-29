@@ -1,0 +1,158 @@
+<script type="text/javascript">
+RED.nodes.registerType('xlsx-reader', {
+    category: 'function',
+    color: '#A6BBCF',
+    defaults: {
+        name:               { value: "" },
+        path:               { value: "" },
+        pathType:           { value: "str" },   // str | msg | flow | global | env
+        mode:               { value: "file" },  // file | directory
+        excludeRegex:       { value: "^\\." },  // default: exclude sheets starting with '.'
+        includeHidden:      { value: false },
+
+        // NEW:
+        outputTargetType:   { value: "msg" },   // msg | flow | global
+        outputTargetPath:   { value: "data" },  // deep path (e.g., data, store.xl)
+        fillMerged:         { value: false },   // enable forward-fill for columns
+        mergedColumns:      { value: "" }       // comma-separated headers (case-sensitive)
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "file.png",
+    label: function() {
+        return this.name || "xlsx-reader";
+    },
+    oneditprepare: function() {
+        // Path typed input (supports str/msg/flow/global/env)
+        $("#node-input-path").typedInput({
+            default: 'str',
+            types: ['str','msg','flow','global','env'],
+            typeField: $("#node-input-pathType")
+        });
+
+        // Output target typed input: choose msg/flow/global + provide deep path
+        $("#node-input-outputTargetPath").typedInput({
+            default: 'msg',
+            types: ['msg','flow','global'],
+            typeField: $("#node-input-outputTargetType")
+        });
+    }
+});
+</script>
+
+<style>
+  .nrdb-xlsx-reader .form-row label {
+    display: block;
+    width: 100%;
+    margin-bottom: 4px;
+  }
+  .nrdb-xlsx-reader .form-row input[type="text"],
+  .nrdb-xlsx-reader .form-row select {
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+  .nrdb-xlsx-reader .form-row .form-tips {
+    margin-top: 4px;
+  }
+  .nrdb-xlsx-reader .checkbox-row {
+    display: block;
+    padding: 4px 0;
+  }
+  .nrdb-xlsx-reader .checkbox-row input[type="checkbox"] {
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+</style>
+
+<script type="text/x-red" data-template-name="xlsx-reader">
+  <div class="nrdb-xlsx-reader">
+    <div class="form-row">
+      <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+      <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+
+    <div class="form-row">
+      <label for="node-input-path"><i class="fa fa-file"></i> Path</label>
+      <input type="text" id="node-input-path" placeholder="Path to .xlsx file or directory">
+      <input type="hidden" id="node-input-pathType">
+      <p class="form-tips">Path to a .xlsx file or a directory (supports str, msg, flow, global, env).</p>
+    </div>
+
+    <div class="form-row">
+      <label for="node-input-mode"><i class="fa fa-cogs"></i> Mode</label>
+      <select id="node-input-mode">
+        <option value="file">Single File</option>
+        <option value="directory">Directory</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <label for="node-input-excludeRegex"><i class="fa fa-ban"></i> Exclude Regex</label>
+      <input type="text" id="node-input-excludeRegex" placeholder="Regex for excluded sheets (e.g., ^\.)">
+    </div>
+
+    <div class="form-row">
+      <label class="checkbox-row" for="node-input-includeHidden">
+        <input type="checkbox" id="node-input-includeHidden">
+        Include Hidden
+      </label>
+    </div>
+
+    <hr/>
+
+    <div class="form-row">
+      <label for="node-input-outputTargetPath"><i class="fa fa-sign-out"></i> Output Target</label>
+      <input type="text" id="node-input-outputTargetPath" placeholder="e.g., data or store.xl">
+      <input type="hidden" id="node-input-outputTargetType">
+      <p class="form-tips">Choose msg/flow/global and the deep path key to store the aggregated result.</p>
+    </div>
+
+    <div class="form-row">
+      <label class="checkbox-row" for="node-input-fillMerged">
+        <input type="checkbox" id="node-input-fillMerged">
+        Fill Merged-like Cells
+      </label>
+    </div>
+
+    <div class="form-row">
+      <label for="node-input-mergedColumns"><i class="fa fa-columns"></i> Columns to Fill</label>
+      <input type="text" id="node-input-mergedColumns" placeholder="Comma-separated headers, e.g., Family,CategoryID">
+      <p class="form-tips">For the specified column headers (case-sensitive), empty cells are forward-filled with the last non-empty value above.</p>
+    </div>
+  </div>
+</script>
+
+<script type="text/x-red" data-help-name="xlsx-reader">
+  <p><b>XLSX Reader</b> reads Excel files or directories of Excel files and outputs a single aggregated result.</p>
+  <p><b>Options:</b></p>
+  <ul>
+    <li><b>Path</b>: file or directory path (can be <code>str</code>, <code>msg</code>, <code>flow</code>, <code>global</code>, or <code>env</code>).</li>
+    <li><b>Mode</b>: read a single file or all .xlsx files in a directory.</li>
+    <li><b>Exclude Regex</b>: sheets matching this regex are skipped (default skips sheets starting with ".").</li>
+    <li><b>Include Hidden</b>: include hidden/veryHidden sheets if checked.</li>
+    <li><b>Output Target</b>: where to store the aggregated result (choose <code>msg</code>, <code>flow</code>, or <code>global</code> and provide a deep path like <code>data</code> or <code>store.xl</code>).</li>
+    <li><b>Fill Merged-like Cells</b>: if enabled, for the specified column headers, empty cells are forward-filled with the last non-empty value (useful when Excel merged cells were used).</li>
+    <li><b>Columns to Fill</b>: comma-separated list of column headers to apply the fill-forward behavior (case-sensitive).</li>
+  </ul>
+  <p><b>Output Structure (example):</b></p>
+<pre>
+msg.data = {
+  data: {
+    "C:/path/file1.xlsx": {
+      "Sheet1": [ { ...row }, ... ],
+      "Sheet2": [ { ...row }, ... ]
+    },
+    "C:/path/file2.xlsx": {
+      "SheetA": [ { ... }, ... ]
+    }
+  },
+  summary: { fileCount: 2, sheetCount: 3, rowCount: 1234 },
+  options: {
+    excludeRegex: "^\\.",
+    includeHidden: false,
+    fillMerged: true,
+    mergedColumns: ["Family","CategoryID"]
+  }
+}
+</pre>
+</script>

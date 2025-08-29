@@ -1,0 +1,19 @@
+{
+  "name": "node-red-contrib-xlsx-reader",
+  "version": "0.1.0",
+  "description": "Node-RED node to read Excel files/directories, aggregate sheets, and fill merged-like columns",
+  "license": "MIT",
+  "keywords": ["node-red", "node-red-contrib", "excel", "xlsx", "data"],
+  "author": "sai.aioub@gmail.com",
+  "repository": { "type": "git", "url": "https://github.com/yourname/node-red-contrib-xlsx-reader.git" },
+  "bugs": { "url": "https://github.com/AIOUBSAI/node-red-contrib-xlsx-reader/issues" },
+  "homepage": "https://github.com/AIOUBSAI/node-red-contrib-xlsx-reader#readme",
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  },
+  "node-red": {
+    "nodes": {
+      "xlsx-reader": "xlsx-reader.js"
+    }
+  }
+}
