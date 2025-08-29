@@ -2,7 +2,7 @@
 
 Node-RED node to read Excel files/directories, aggregate sheets into a single output, and optionally fill “merged-like” columns.
 
-![status](https://img.shields.io/badge/state-open%20or%20closed-blue) ![license](https://img.shields.io/badge/License-MIT-green)
+![license](https://img.shields.io/badge/License-MIT-green)
 
 ---
 
