@@ -147,17 +147,3 @@ return msg;
 ## License
 
 MIT © AIOUBSAI
-
----
-
-### Next steps (repo)
-
-1. Put `package.json`, `xlsx-reader.js`, `xlsx-reader.html`, `README.md`, and `LICENSE` **in the repo root** (as you asked).
-2. Commit & push to GitHub.
-3. Ensure `package.json` has:
-
-   * `"license": "MIT"`
-   * `"keywords": ["node-red", ...]`
-   * `"repository"`, `"bugs"`, `"homepage"` pointing to your GitHub repo.
-
-When you’re ready, I can check your `package.json` and tweak it for publish-readiness.
