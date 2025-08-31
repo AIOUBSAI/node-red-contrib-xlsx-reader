@@ -144,10 +144,6 @@ return msg;
 * **Headers**: forward-fill uses **header names** exactly as parsed by `xlsx`. Ensure consistent casing.
 * **Icons**: the node uses the default `file.png`. To use a custom icon, add `icons/youricon.svg` and reference it in the HTML.
 
-## Changelog
-
-* **0.1.0** – Initial public release: directory/single-file modes, hidden/regex filters, aggregated output, msg/flow/global target, merged-cells fill-forward.
-
 ## License
 
 MIT © AIOUBSAI
